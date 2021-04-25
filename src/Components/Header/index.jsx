@@ -1,18 +1,18 @@
-import { Col, Container, Row } from "react-bootstrap";
 import { useRedirect } from "../../utils/hooks";
-import "./_styles.scss";
 
 const Header = () => {
   let redirect = useRedirect();
+
   return (
-    <header>
-      <Container>
-        <Row>
-          <Col className="d-flex justify-content-center">
-            <h2 onClick={() => redirect("/")}>Github searcher</h2>
-          </Col>
-        </Row>
-      </Container>
+    <header className="h-20 shadow-md">
+      <div className="container flex justify-center items-center h-full">
+        <h1
+          className="text-center text-2xl cursor-pointer"
+          onClick={() => redirect("/")}
+        >
+          Github searcher
+        </h1>
+      </div>
     </header>
   );
 };
