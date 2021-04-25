@@ -1,11 +1,10 @@
 import Header from "../Components/Header";
 
-const MainLayout = ({ children = {} }) => {
-  return (
-    <>
-      <Header />
-      {children}
-    </>
-  );
-};
+const MainLayout = ({ children = {} }) => (
+  <>
+    <Header />
+    {children}
+  </>
+);
+
 export default MainLayout;

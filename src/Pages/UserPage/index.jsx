@@ -1,69 +1,46 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import Error from "../../Components/Error";
 import ReposTable from "../../Components/ReposTable";
+import User from "../../Components/User";
 import MainLayout from "../../Layout/MainLayout";
-import "./_styles.scss";
+import { api } from "../../utils/api";
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
   const searchedUser = useParams();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (searchedUser) {
-      axios
-        .get(`https://api.github.com/users/${searchedUser.userLogin}`)
-        .then((res) => {
-          setUser(res.data);
-        });
-    }
+    (async () => {
+      if (searchedUser) {
+        try {
+          const response = await api().get(`/users/${searchedUser.userLogin}`);
+          setUser(response.data);
+        } catch (e) {
+          setError(e.response);
+        }
+      }
+    })();
   }, [searchedUser]);
 
   return (
     <MainLayout>
-      <Container className="user-page">
+      <div className="container flex flex-col user-page mt-20">
         {user ? (
           <>
-            <Row>
-              <Col className="d-flex justify-content-center">
-                <img src={user.avatar_url} alt="avatar" />
-              </Col>
-              <Col className="d-flex flex-column user-page_user-info-block">
-                <span>
-                  Login <strong>{user.login}</strong>
-                </span>
-                <span>
-                  Followers <strong>{user.followers}</strong>
-                </span>
-                <span>
-                  Following <strong>{user.following}</strong>
-                </span>
-                <span>
-                  E-Mail <strong>{user.email}</strong>
-                </span>
-                <span>
-                  Location <strong>{user.location}</strong>
-                </span>
-                <span>
-                  User created{" "}
-                  <strong>{new Date().toUTCString(user.created_at)}</strong>
-                </span>
-                <span>
-                  Bio <strong>{user.bio}</strong>
-                </span>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <ReposTable user={user} />
-              </Col>
-            </Row>
+            <div className="flex justify-evenly user-page-block">
+              <img className="h-44" src={user.avatar_url} alt="avatar" />
+              <User user={user} />
+            </div>
+            <ReposTable user={user} />
           </>
+        ) : error ? (
+          <Error error={error} />
         ) : (
-          "loading..."
+          <h1 className="text-center text-3xl">Loading...</h1>
         )}
-      </Container>
+      </div>
     </MainLayout>
   );
 };

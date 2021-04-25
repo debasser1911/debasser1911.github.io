@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Table } from "react-bootstrap";
 import RepoRow from "../RepoRow";
 import SearchBar from "../SearchBar";
-import "./_styles.scss";
 
 const ReposTable = ({ user = null }) => {
   const [repositories, setRepositories] = useState([]);
@@ -21,11 +19,9 @@ const ReposTable = ({ user = null }) => {
   };
 
   useEffect(() => {
-    (async () => {
-      if (Object.keys(user).length) {
-        getReposAction(page);
-      }
-    })();
+    if (Object.keys(user).length) {
+      getReposAction(page);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -59,11 +55,9 @@ const ReposTable = ({ user = null }) => {
   }, [loaderRef.current]);
 
   useEffect(() => {
-    (async () => {
-      if (page > 1) {
-        getReposAction(page);
-      }
-    })();
+    if (page > 1) {
+      getReposAction(page);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
@@ -79,31 +73,33 @@ const ReposTable = ({ user = null }) => {
   }, [searchString]);
 
   return (
-    <>
-      <h3>Search in repositories list</h3>
+    <div className="flex flex-col justify-center">
       <SearchBar
         searchString={searchString}
         setSearchString={setSearchString}
+        placeholder={"Search in repositories list"}
       />
-      <Table>
-        <thead>
-          <tr>
-            <th>Repository name</th>
-            <th>Info</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered?.map((repo, index) => (
-            <RepoRow repo={repo} key={index} />
-          ))}
-        </tbody>
-      </Table>
+      <div className="flex justify-center auto-cols-max">
+        <table className="w-2/3 table table-auto">
+          <thead className="border-4 border-gray-500">
+            <tr>
+              <th>Repository name</th>
+              <th>Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered?.map((repo, index) => (
+              <RepoRow repo={repo} key={index} />
+            ))}
+          </tbody>
+        </table>
+      </div>
       {user?.public_repos !== filtered?.length && !searchString && (
-        <div className="loading" ref={loaderRef}>
+        <div className="container" ref={loaderRef}>
           <h2>Loading...</h2>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,14 +1,14 @@
-import { useRedirect } from "../../utils/hooks";
+import { useHistory } from "react-router-dom";
 
 const Header = () => {
-  let redirect = useRedirect();
+  const history = useHistory();
 
   return (
     <header className="h-20 shadow-md">
       <div className="container flex justify-center items-center h-full">
         <h1
           className="text-center text-2xl cursor-pointer"
-          onClick={() => redirect("/")}
+          onClick={() => history.push("/")}
         >
           Github searcher
         </h1>

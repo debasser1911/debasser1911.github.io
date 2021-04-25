@@ -1,21 +1,21 @@
-import "./_styles.scss";
+import { Link } from "react-router-dom";
 
-const UserRow = ({ user = {}, setSelectedUser, setUserModalOpen }) => (
-  <tr
-    className="user-block"
-    onClick={() => {
-      setUserModalOpen(true);
-      setSelectedUser(user);
-    }}
-  >
-    <td>
-      <img src={user?.avatar_url} alt="avatar" />
+const UserRow = ({ user = {} }) => (
+  <tr className="user-row border-2 border-gray-200">
+    <td className=" p-3 border-2 border-gray-200">
+      <img className="w-28" src={user?.avatar_url} alt="avatar" />
     </td>
-    <td>
-      <p>{user?.login}</p>
+    <td className=" p-3 border-2 border-gray-200">
+      <Link
+        to={(location) => ({ ...location, pathname: `/user/${user?.login}` })}
+      >
+        <strong>{user?.login}</strong>
+      </Link>
     </td>
-    <td>
-      <span>{user?.repos_url}</span>
+    <td className=" p-3 border-2 border-gray-200">
+      <a href={user?.repos_url} target="_blank" rel="noreferrer">
+        User repositories page
+      </a>
     </td>
   </tr>
 );
