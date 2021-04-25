@@ -3,6 +3,7 @@ import SearchBar from "../../Components/SearchBar";
 import UsersTable from "../../Components/UsersTable";
 import MainLayout from "../../Layout/MainLayout";
 import { api } from "../../utils/api";
+import Error from "../../Components/Error";
 
 const UserSearchPage = () => {
   const [users, setUsers] = useState([]);
@@ -26,8 +27,7 @@ const UserSearchPage = () => {
         }
       }
     } catch (e) {
-      setError(e.response?.data?.message);
-      console.log(error);
+      setError(e.response);
     }
   };
 
@@ -88,11 +88,15 @@ const UserSearchPage = () => {
           setSearchString={setSearchString}
           placeholder={"Please enter GitHub user name/login"}
         />
-        <UsersTable
-          users={users}
-          loaderRef={userSearchLoadRef}
-          totalUsers={totalUsers}
-        />
+        {!error ? (
+          <UsersTable
+            users={users}
+            loaderRef={userSearchLoadRef}
+            totalUsers={totalUsers}
+          />
+        ) : (
+          <Error error={error} />
+        )}
       </div>
     </MainLayout>
   );
