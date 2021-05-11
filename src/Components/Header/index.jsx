@@ -1,4 +1,6 @@
 import { useHistory } from "react-router-dom";
+import LoggedUser from "../../LoggedUser";
+import { enableLogin } from "../../utils/constants";
 
 const Header = () => {
   const history = useHistory();
@@ -12,6 +14,7 @@ const Header = () => {
         >
           Github searcher
         </h1>
+        {enableLogin && <LoggedUser />}
       </div>
     </header>
   );
